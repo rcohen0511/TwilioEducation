@@ -1,0 +1,20 @@
+{
+  "name": "sms_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sms.js",
+  "dependencies": {
+    "formidable": "^1.1.1",
+    "twilio": "^3.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node sms.js"
+  },
+  "author": "",
+  "license": "ISC",
+    "engines":{
+        "node":"6.11.3"
+    }
+}
