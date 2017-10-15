@@ -64,6 +64,12 @@ function Send_DailyMessagePrompt(){
     */
 }
 
+function If_WantsQuiz(){
+    
+}
 
+function If_DoesntWantQuiz(){
+    
+}
 
 server.listen(port);
