@@ -1,3 +1,10 @@
+var questions = {
+  "questionId" : 0,
+  "questionName" : "Test question Name",
+  "info" : "Basic information",
+  "question" : "What is blah blah, basic question?"
+}
+
 var client;
 var http = require('http');
 var fs = require('fs');
@@ -6,6 +13,7 @@ var util = require('util');
 var port = process.env.PORT || 3000;
 
 var server = http.createServer(function (req, res) {
+	console.log(questions)
 	console.log(process.env);
 	if (req.method.toLowerCase() == 'get') {
 		displayForm(res);
@@ -44,7 +52,7 @@ function formSubmission(req, res) {
 		}));
 		client = require('twilio')(
 			values[1], values[2]
-		);		
+		);
         client.messages.create({
             from: "+1"+values[3],
             to: "+1"+values[4],
