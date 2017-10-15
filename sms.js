@@ -8,13 +8,13 @@ var port = process.env.PORT || 3000;
 var server = http.createServer(function (req, res) {
 	console.log(process.env);
 	if (req.method.toLowerCase() == 'get') {
-		displayForm(res);
+		displayAdminPanel(res);
 	} else if (req.method.toLowerCase() == 'post') {
-		formSubmission(req, res);
+		Send_NewUser(req, res);
 	}
 });
 
-function displayForm(res) {
+function displayAdminPanel(res) {
 	fs.readFile('index.html', function (err, data) {
 		res.writeHead(200, {
 			'Content-Type': 'text/html',
@@ -26,7 +26,7 @@ function displayForm(res) {
 };
 
 
-function formSubmission(req, res) {
+function Send_NewUser(req, res) {
 	var fields = [];
 	var values = [];
 	var form = new formidable.IncomingForm();
@@ -55,4 +55,15 @@ function formSubmission(req, res) {
 	});
 	form.parse(req);
 }
+
+function Send_DailyMessagePrompt(){
+    /* 
+    new message every day
+    listens for keyword to start quiz
+    calls to DB for quiz info
+    */
+}
+
+
+
 server.listen(port);
