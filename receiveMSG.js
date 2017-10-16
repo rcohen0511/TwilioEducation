@@ -45,7 +45,7 @@ app.post('/sms/', function(req,res){
 
 http.createServer(app).listen(3000 || process.env.PORT, function(){
     console.log('Listening on 3000');
-})
+});
 
 //ngrok http 3000
 //get url to A Message Comes In w/ /sms to end of url

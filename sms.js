@@ -5,13 +5,36 @@ var formidable = require("formidable");
 var util = require('util');
 var port = process.env.PORT || 3000;
 
+//inbound to handle responses
+var express = require('express');
+var twilio = require('twilio');
+
+var app = express();
+
+
+app.get('/', function(req, res) {
+    var twilio = require('twilio');
+    var twiml = new twilio.TwimlResponse();
+    if (req.query.Body == 'hello') {
+        twiml.message('Hi!');
+    } else if(req.query.Body == 'bye') {
+        twiml.message('Goodbye');
+    } else {
+        twiml.message('No Body param match, Twilio sends this in the request to your server.');
+    }
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.end(twiml.toString());
+});
+
+
+//outbound 
 var server = http.createServer(function (req, res) {
 	console.log(process.env);
-	if (req.method.toLowerCase() == 'get') {
-		displayAdminPanel(res);
-	} else if (req.method.toLowerCase() == 'post') {
-		Send_NewUser(req, res);
-	}
+//	if (req.method.toLowerCase() == 'get') {
+//		displayAdminPanel(res);
+//	} else if (req.method.toLowerCase() == 'post') {
+//		Send_NewUser(req, res);
+//	}
 });
 
 function displayAdminPanel(res) {
@@ -73,3 +96,27 @@ function If_DoesntWantQuiz(){
 }
 
 server.listen(port);
+
+
+
+/* dummy code for auto-sending: 
+
+var http = require('http');
+var express = require('express');
+var twilio = require('twilio');
+
+var app = express();
+
+app.post('/sms/', function(req,res){
+    var twilio = require('twilio');
+    var twiml = new twilio.TwimlResponse();
+    twiml.message("OUTBOUT MESSAGE");
+    res.writeHead(200,{'Content-Type': 'text/xml'});
+    res.end(twiml.toString());
+});
+
+http.createServer(app).listen(3000 || process.env.PORT, function(){
+    console.log('Listening on 3000');
+});
+
+*/
