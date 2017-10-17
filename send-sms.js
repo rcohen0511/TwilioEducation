@@ -15,12 +15,6 @@ client.messages.create({
 });
 
 /*
-var client;
-var http = require('http');
-var fs = require('fs');
-var formidable = require("formidable");
-var util = require('util');
-var port = process.env.PORT || 3000;
 
 var server = http.createServer(function (req, res) {
 	console.log(process.env);
