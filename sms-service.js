@@ -10,7 +10,6 @@ var client = require('twilio')(
 );
 
 setInterval(function () {
-
 	client.messages.create({
 		from: "+19149966800",
 		to: "+19143301533",
@@ -20,8 +19,6 @@ setInterval(function () {
 	});
 	//every 400 seconds
 }, 400000);
-
-
 
 var app = express();
 
@@ -33,11 +30,9 @@ app.post('/sms', function (req, res) {
 	var twilio = require('twilio');
 	var twiml = new MessagingResponse();
 
-
 	var msgBody = req.body.Body;
 	console.log(msgBody == 'hey');
 	//	if()
-
 
 	twiml.message('The Robots are coming! Head for the hills!');
 	res.writeHead(200, {
