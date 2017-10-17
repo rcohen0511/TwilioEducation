@@ -1,3 +1,4 @@
+// Mock Data
 var questions =[
  {"questionId" : 0,
   "questionName" : "Test question Name",
@@ -16,82 +17,87 @@ var questions =[
   	 "answer" : "Answer to question2"},
 ]
 var users = [
+    {"name":"Jon Koller",
+    "number":"+19143301533"},
 		{"name":"Bruce Wayne",
-		"number": "9174445555"}
-	,
+		"number": "+19174445555"},
 		{"name":"Arnold Schwartzenager",
-		"number" : "2123334444"}
+		"number" : "+12123334444"}
 	]
-
+// =========================================================================
+//  Variables
 var globalDay = 0;
-var client;
+var client = require('twilio')(
+	'ACc694cec59a35c6b5830571760dc626a6',
+	'af0ddb5adb3d8d38d04babd5b03b24db'
+);
 var http = require('http');
 var fs = require('fs');
 var formidable = require("formidable");
 var util = require('util');
 var port = process.env.PORT || 3000;
+var MessagingResponse = require('twilio').twiml.MessagingResponse;
+var bodyParser = require('body-parser');
+var express = require('express');
+var adminNum = "+19149966800"
 
-var server = http.createServer(function (req, res) {
-	// console.log(questions.questionId)
-	// console.log(process.env);
-	startApp();
-	if (req.method.toLowerCase() == 'get') {
-		displayForm(res);
-	} else if (req.method.toLowerCase() == 'post') {
-		formSubmission(req, res);
-	}
-});
 
-function displayForm(res) {
-	fs.readFile('index.html', function (err, data) {
-		res.writeHead(200, {
-			'Content-Type': 'text/html',
-			'Content-Length': data.length
+
+
+// var server = http.createServer(function (req, res) {
+// // 	startApp();
+// // 	if (req.method.toLowerCase() == 'get') {
+// // 		displayForm(res);
+// // 	} else if (req.method.toLowerCase() == 'post') {
+// // 		formSubmission(req, res);
+// // 	}
+// // });
+
+// function displayForm(res) {
+// 	fs.readFile('index.html', function (err, data) {
+// 		res.writeHead(200, {
+// 			'Content-Type': 'text/html',
+// 			'Content-Length': data.length
+// 		});
+// 		res.write(data);
+// 		res.end();
+// 	});
+// };
+//
+// function formSubmission(req, res) {
+// 	var fields = [];
+// 	var values = [];
+// 	var form = new formidable.IncomingForm();
+// 	form.on('field', function (field, value) {
+// 		fields[field] = value;
+// 		values.push(value);
+// 	});
+//
+// 	form.on('end', function () {
+// 		res.writeHead(200, {
+// 			'content-type': 'text/plain'
+// 		});
+// 		res.end(util.inspect({
+// 			fields: fields
+// 		}));
+//
+// 	});
+// 	form.parse(req);
+// }
+
+function sendText(to, body){
+	client.messages.create({
+			from: adminNum,
+			to: to,
+			body: body
+		}, function (err, message) {
+			if (err) console.error(err.message);
 		});
-		res.write(data);
-		res.end();
-	});
-};
-
-
-function formSubmission(req, res) {
-	var fields = [];
-	var values = [];
-	var form = new formidable.IncomingForm();
-	form.on('field', function (field, value) {
-		fields[field] = value;
-		values.push(value);
-	});
-
-	form.on('end', function () {
-		res.writeHead(200, {
-			'content-type': 'text/plain'
-		});
-		res.end(util.inspect({
-			fields: fields
-		}));
-
-	});
-	form.parse(req);
-}
-function sendText(from, to, message){
-	client = require('twilio')(
-		values[1], values[2]
-	);
-			client.messages.create({
-					from: from,
-					to: to,
-					body: message
-			}, function (err, message) {
-					if (err) console.error(err.message);
-			});
 }
 
 function startApp(){
-
-
 	// Change time interval to daily when you are done testing
-	setInterval(function(){ dailyTasks(globalDay) },2000);
+	setInterval(function(){ dailyTasks(globalDay) },10000);
 }
 
 function dailyTasks(day){
@@ -112,10 +118,43 @@ function dailyTasks(day){
 	for (var i = 0; i < arrayLength; i++) {
     console.log("Send daily info message to user: "+users[i].name+" on phone number: "+users[i].number);
 		console.log("Daily info message: "+dailyInfo)
+		sendText(users[i].number, dailyInfo)
 	}
-
-
 }
+
+// ====================================================================
+// Everything above this is part of setting up the daily task/basic
+// functions, everything bellow will be the listener/answers
+// ====================================================================
+
+var app = express();
+
+app.use(bodyParser.urlencoded({
+	extended: false
+}));
+app.post('/sms', function (req, res) {
+	var twilio = require('twilio');
+	var twiml = new MessagingResponse();
+
+	var msgBody = req.body.Body;
+	console.log(msgBody == 'hey');
+	//	if()
+
+	twiml.message('The Robots are coming! Head for the hills!');
+	res.writeHead(200, {
+		'Content-Type': 'text/xml'
+	});
+	res.end(twiml.toString());
+});
+
+// Creating Server
+http.createServer(app).listen(3000, function () {
+	console.log("Express server listening on port 3000");
+  startApp()
+});
+
+
+
 
 function sendTodaysQuiz(day,number){
 	//We need to get the phone number from the listener, not sure how this works
@@ -135,4 +174,4 @@ function checkAnswer(day, answer){
 	}
 }
 
-server.listen(port);
+// server.listen(port);
