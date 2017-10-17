@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-var questions = {
-  "questionId" : 0,
-  "questionName" : "Test question Name",
-  "info" : "Basic information",
-  "question" : "What is blah blah, basic question?"
-}
-
-
-=======
 var questions =[
  {"questionId" : 0,
   "questionName" : "Test question Name",
@@ -34,7 +24,6 @@ var users = [
 	]
 
 var globalDay = 0;
->>>>>>> mocktest
 var client;
 var http = require('http');
 var fs = require('fs');
@@ -43,14 +32,9 @@ var util = require('util');
 var port = process.env.PORT || 3000;
 
 var server = http.createServer(function (req, res) {
-<<<<<<< HEAD
-	console.log(process.env);
-	console.log(questions);
-=======
 	// console.log(questions.questionId)
 	// console.log(process.env);
 	startApp();
->>>>>>> mocktest
 	if (req.method.toLowerCase() == 'get') {
 		displayForm(res);
 	} else if (req.method.toLowerCase() == 'post') {
@@ -86,28 +70,6 @@ function formSubmission(req, res) {
 		res.end(util.inspect({
 			fields: fields
 		}));
-<<<<<<< HEAD
-		client = require('twilio')(
-			values[1], values[2]
-		);
-        client.messages.create({
-            from: "+1"+values[3],
-            to: "+1"+values[4],
-            body: "Hello from " + values[0] + " CS 643 Fall 2017!"
-        }, function (err, message) {
-            if (err) console.error(err.message);
-        });
-	});
-	form.parse(req);
-}
-
-function getQuestion(){
-
-	console.log(questions);
-
-}
-
-=======
 
 	});
 	form.parse(req);
@@ -172,6 +134,5 @@ function checkAnswer(day, answer){
 		console.log("Send text that the answer was wrong and right answer: "+correctAns)
 	}
 }
->>>>>>> mocktest
 
 server.listen(port);
