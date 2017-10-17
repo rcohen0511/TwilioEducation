@@ -16,11 +16,14 @@ var questions =[
   	 "answer" : "Answer to question2"},
 ]
 var users = [
-		{"name":"Bruce Wayne",
-		"number": "9174445555"}
-	,
-		{"name":"Arnold Schwartzenager",
-		"number" : "2123334444"}
+	{'name':'Jon Koller',
+	'number':'+19143301533'},
+	
+//		{"name":"Bruce Wayne",
+//		"number": "+19174445555"}
+//	,
+//		{"name":"Arnold Schwartzenager",
+//		"number" : "+12123334444"}
 	]
 
 var globalDay = 0;
@@ -88,8 +91,6 @@ function sendText(from, to, message){
 }
 
 function startApp(){
-
-
 	// Change time interval to daily when you are done testing
 	setInterval(function(){ dailyTasks(globalDay) },2000);
 }

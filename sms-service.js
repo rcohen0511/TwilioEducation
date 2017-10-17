@@ -10,15 +10,20 @@ var client = require('twilio')(
 );
 
 setInterval(function () {
-	client.messages.create({
+	for(var i = 0 ; i < users.length; i++){
+			client.messages.create({
 		from: "+19149966800",
 		to: "+19143301533",
 		body: "Hello from Jonathan Koller CS 643 Fall 2017!"
 	}, function (err, message) {
 		if (err) console.error(err.message);
 	});
+		console.log("Send daily info message to user: "+users[i].name+" on phone number: "+users[i].number);
+		console.log("Daily info message: "+dailyInfo)
+	}
+
 	//every 400 seconds
-}, 400000);
+}, 4000);
 
 var app = express();
 
@@ -32,7 +37,9 @@ app.post('/sms', function (req, res) {
 
 	var msgBody = req.body.Body;
 	console.log(msgBody == 'hey');
-	//	if()
+		if(msgBody == 'yes' || msgBody == 'start'){
+			
+		}
 
 	twiml.message('The Robots are coming! Head for the hills!');
 	res.writeHead(200, {
