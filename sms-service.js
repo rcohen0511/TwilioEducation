@@ -87,6 +87,7 @@ function displayQuestion(twiml_msg_res) {
     twiml_msg_res.message(questions[globalDay]['question']);
     //for now, it's one quesion per day
     //    queryQuiz()
+	//
 }
 
 function queryQuiz(userAnswerAttempt) {
