@@ -36,7 +36,7 @@ var isQuestionOne = false; //this is a flag that gets switched when the quiz is 
 var isQuestionTwo = false;
 var isQuestionThree = false;
 */
-app.post('/sms/reply/', function (req, res) {
+app.post('/welcome/sms/reply/', function (req, res) {
     var twilio = require('twilio');
     var twiml = new MessagingResponse();
 
