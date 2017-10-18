@@ -11,6 +11,7 @@ var client = require('twilio')(
 
 
 //to be put into the timer on line 73 or so
+//setInterval
 setInterval(function () {
     for (var i = 0; i < users.length; i++) {
         client.messages.create({
@@ -30,40 +31,44 @@ var app = express();
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-
+var acceptedQuiz = false;
+var isQuestionOne = false; //this is a flag that gets switched when the quiz is initialized
+/*
+//for future implementation, in which each day has 3 questions
+var isQuestionTwo = false;
+var isQuestionThree = false;
+*/
 app.post('/sms', function (req, res) {
     var twilio = require('twilio');
     var twiml = new MessagingResponse();
-    var acceptedQuiz = false;
-     var isQuestionOne = false; //this is a flag that gets switched when the quiz is initialized
-    /*
-    //for future implementation, in which each day has 3 questions
-    var isQuestionTwo = false;
-    var isQuestionThree = false;
-    */
+
     var msgBody = req.body.Body;
 
-    if (!acceptedQuiz){ //if hasnt accepted the quiz attempt
-        if(msgBody.trim().toLowerCase() == 'yes'){
-            acceptedQuiz = true;
-            twiml.message("quiz is starting");
-            isQuestionOne = true;
-        }
-    }else{ //quiz is begun
-        if(isQuestionOne){
-            displayQuestion(twiml); 
+    console.log(msgBody);
+    if (msgBody.trim().toLowerCase() == 'yes') { //if hasnt accepted the quiz attempt
+        //        if (msgBody.trim().toLowerCase() == 'yes') {
+        //            acceptedQuiz = true;
+        twiml.message("quiz is starting");
+        //            isQuestionOne = true;
+        //        }
+    }
+
+    /* 
+    else { //quiz is begun
+        if (isQuestionOne) {
+            displayQuestion(twiml);
             //display question and then check again for boolean flag
-            switch(globalDay){
+            switch (globalDay) {
                 case 0:
                 case 1:
-                case 2: 
-                    
+                case 2:
+
             }
-        }else{
+        } else {
             twiml.message('Wait \'til tomorrow for the next question!');
         }
-        
-       /* 
+*/
+    /* 
        
 //--Implementation for multiple questions per day to come --
                     //This will be added under the initial boolean check of acceptedQuiz
@@ -79,7 +84,7 @@ app.post('/sms', function (req, res) {
             
         }
         */
-    }
+    //    }
 
 
 
@@ -94,10 +99,10 @@ http.createServer(app).listen(3000, function () {
 });
 
 
-function displayQuestion(twiml_msg_res){
+function displayQuestion(twiml_msg_res) {
     twiml_msg_res.message(questions[globalDay]['question']);
     //for now, it's one quesion per day
-//    queryQuiz()
+    //    queryQuiz()
 }
 
 function queryQuiz(userAnswerAttempt) {
