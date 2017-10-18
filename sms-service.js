@@ -9,8 +9,7 @@ var client = require('twilio')(
     'af0ddb5adb3d8d38d04babd5b03b24db'
 );
 
-
-//to be put into the timer on line 73 or so
+//
 //setInterval
 setTimeout(function () {
     for (var i = 0; i < users.length; i++) {
@@ -73,42 +72,6 @@ app.post('/sms', function (req, res) {
             twiml.message('I\'m sorry, but that\'s incorrect. Try again tomorrow!');
         }
     }
-
-    /* 
-    else { //quiz is begun
-        if (isQuestionOne) {
-            displayQuestion(twiml);
-            //display question and then check again for boolean flag
-            switch (globalDay) {
-                case 0:
-                case 1:
-                case 2:
-
-            }
-        } else {
-            twiml.message('Wait \'til tomorrow for the next question!');
-        }
-*/
-    /* 
-       
-//--Implementation for multiple questions per day to come --
-                    //This will be added under the initial boolean check of acceptedQuiz
-        //at this point, isQuestionOne is true, so we are checking for booleans one quesiton ahead of where we are
-        if(!isQuestionTwo){
-            displayQuestion(questions)
-            
-        }
-        else if(!isQuestionThree){
-            
-        }
-        else{
-            
-        }
-        */
-    //    }
-
-
-
     res.writeHead(200, {
         'Content-Type': 'text/xml'
     });
