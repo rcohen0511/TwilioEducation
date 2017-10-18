@@ -5,7 +5,7 @@ var questions = [
         "info": "Basic information",
         "question": "What is blah blah, basic question?",
         "choices":[1,2,3],
-        "answer": 0
+        "answer": 1
     },
     {
         "questionId": 1,
@@ -13,7 +13,7 @@ var questions = [
         "info": "Basic information1",
         "question": "What is blah blah, basic question1?",
         "choices":[1,2,3],
-        "answer": 1
+        "answer": 2
     },
     {
         "questionId": 2,
@@ -21,7 +21,7 @@ var questions = [
         "info": "Basic information2",
         "question": "What is blah blah, basic question2?",
         "choices":[1,2,3],
-        "answer": 2
+        "answer": 3
     },
 ]
 var users = [

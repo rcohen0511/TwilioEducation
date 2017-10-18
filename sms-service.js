@@ -12,7 +12,7 @@ var client = require('twilio')(
 
 //to be put into the timer on line 73 or so
 //setInterval
-setInterval(function () {
+setTimeout(function () {
     for (var i = 0; i < users.length; i++) {
         client.messages.create({
             from: "+19149966800",
@@ -22,8 +22,7 @@ setInterval(function () {
             if (err) console.error(err.message);
         });
     }
-
-}, 4000);
+}, 1000);
 //dayInMilliseconds
 
 var app = express();
@@ -43,14 +42,32 @@ app.post('/sms', function (req, res) {
     var twiml = new MessagingResponse();
 
     var msgBody = req.body.Body;
-
-    console.log(msgBody);
-    if (msgBody.trim().toLowerCase() == 'yes') { //if hasnt accepted the quiz attempt
-        //        if (msgBody.trim().toLowerCase() == 'yes') {
-        //            acceptedQuiz = true;
-        twiml.message("quiz is starting");
-        //            isQuestionOne = true;
-        //        }
+    
+    if (!acceptedQuiz) { //if hasnt accepted the quiz attempt
+        if (msgBody.trim().toLowerCase() == 'yes')  {
+            acceptedQuiz = true;
+            var messageString = 'Here is your question! \n'+ questions[globalDay]['question'] + '\n Choices:';
+            for(var i = 0; i < 3; i++){
+                messageString += '\n' + questions[globalDay]['choices'][i];
+            }
+            twiml.message(messageString);
+            isQuestionOne = true;            
+        }
+        else if(msgBody.trim().toLowerCase() == 'no'){
+            twiml.message('Fair enough!');
+        }
+        else{
+            twiml.message('Please check your spelling or re-type \'Yes\' to take the quiz!');
+        }
+    }
+    else if(isQuestionOne && msgBody == 1 || msgBody == 2 || msgBody == 3){
+        if((globalDay == 0 && msgBody == 1) || (globalDay == 1 && msgBody == 1) || (globalDay == 2 && msgBody == 3)){            
+           twiml.message('Correct! Great job!');
+        }
+        else if(parseInt(msgBody) > 3 || parseInt(msgBody) < 1 || isNaN(msgBody)){
+            twiml.message('Please check your response! Choose 1, 2, or 3!');            
+        }
+        else twiml.message('I\'m sorry, but that\'s incorrect. Try again tomorrow!');                
     }
 
     /* 
@@ -110,13 +127,13 @@ function queryQuiz(userAnswerAttempt) {
 }
 
 var dayInMilliseconds = 1000 * 60 * 60 * 24;
-var globalDay = 0;
+var globalDay = 1;
 
 
 
 setInterval(function () {
     var lenInfoSet = questions.length;
-    if (globalDay == lenInfoSet - 1) globalDay = 0;
+    if (globalDay == lenInfoSet) globalDay = 1;
     else globalDay++;
 }, dayInMilliseconds);
 
@@ -126,24 +143,26 @@ var questions = [
         "questionName": "Test question Name",
         "info": "Basic information",
         "question": "What is blah blah, basic question?",
-        "answer": "Answer to question"
+        "choices":[1,2,3],
+        "answer": 1
     },
     {
         "questionId": 1,
         "questionName": "Test question Name1",
         "info": "Basic information1",
         "question": "What is blah blah, basic question1?",
-        "answer": "Answer to question1"
+        "choices":[1,2,3],
+        "answer": 2
     },
     {
         "questionId": 2,
         "questionName": "Test question Name2",
         "info": "Basic information2",
         "question": "What is blah blah, basic question2?",
-        "answer": "Answer to question2"
+        "choices":[1,2,3],
+        "answer": 3
     },
 ]
-
 var users = [
     {
         'name': 'Jon Koller',
