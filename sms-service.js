@@ -127,7 +127,6 @@ app.post('/', function (req, res) {
     //setInterval
     setTimeout(function () {
         for (var i = 0; i < users.length; i++) {
-            console.log(values[i + 4]);
             client.messages.create({
                 from: "+19149966800",
                 //                to: users[i]['number'],
@@ -147,6 +146,12 @@ app.post('/sms', function (req, res) {
 
     var msgBody = req.body.Body;
 
+    /* //experimental: registration scheme
+    if(msgBody.trim().toLowerCase() == 'join'){
+        console.log(req.body);
+    }
+    */
+    
     if (!acceptedQuiz) { //if hasnt accepted the quiz attempt
         if (msgBody.trim().toLowerCase() == 'yes') {
             acceptedQuiz = true;
@@ -172,6 +177,7 @@ app.post('/sms', function (req, res) {
             twiml.message('I\'m sorry, but that\'s incorrect. Try again tomorrow!');
         }
     }
+    
     res.writeHead(200, {
         'Content-Type': 'text/xml'
     });
