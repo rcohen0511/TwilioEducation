@@ -46,12 +46,12 @@ app.post('/sms', function (req, res) {
     if (!acceptedQuiz) { //if hasnt accepted the quiz attempt
         if (msgBody.trim().toLowerCase() == 'yes')  {
             acceptedQuiz = true;
+            isQuestionOne = true;            
             var messageString = 'Here is your question! \n'+ questions[globalDay]['question'] + '\n Choices:';
             for(var i = 0; i < 3; i++){
                 messageString += '\n' + questions[globalDay]['choices'][i];
             }
             twiml.message(messageString);
-            isQuestionOne = true;            
         }
         else if(msgBody.trim().toLowerCase() == 'no'){
             twiml.message('Fair enough!');
@@ -60,14 +60,18 @@ app.post('/sms', function (req, res) {
             twiml.message('Please check your spelling or re-type \'Yes\' to take the quiz!');
         }
     }
-    else if(isQuestionOne && msgBody == 1 || msgBody == 2 || msgBody == 3){
+    else if(acceptedQuiz && isQuestionOne){
         if((globalDay == 0 && msgBody == 1) || (globalDay == 1 && msgBody == 1) || (globalDay == 2 && msgBody == 3)){            
-           twiml.message('Correct! Great job!');
+            isQuestionOne = false;
+            twiml.message('Correct! Great job!');
         }
         else if(parseInt(msgBody) > 3 || parseInt(msgBody) < 1 || isNaN(msgBody)){
             twiml.message('Please check your response! Choose 1, 2, or 3!');            
         }
-        else twiml.message('I\'m sorry, but that\'s incorrect. Try again tomorrow!');                
+        else {
+            isQuestionOne = false;
+            twiml.message('I\'m sorry, but that\'s incorrect. Try again tomorrow!');
+        }
     }
 
     /* 
