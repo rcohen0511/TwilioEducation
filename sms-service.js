@@ -46,7 +46,7 @@ app.post('/sms', function (req, res) {
         if (msgBody.trim().toLowerCase() == 'yes')  {
             acceptedQuiz = true;
             isQuestionOne = true;            
-            var messageString = 'Here is your question! \n'+ questions[globalDay]['question'] + '\n Choices:';
+            var messageString = 'Here is your question! \n'+ questions[globalDay]['question'] + '\n\nChoices:\n';
             for(var i = 0; i < 3; i++){
                 messageString += '\n' + questions[globalDay]['choices'][i];
             }
@@ -62,7 +62,7 @@ app.post('/sms', function (req, res) {
     else if(acceptedQuiz && isQuestionOne){
         if((globalDay == 0 && msgBody == 1) || (globalDay == 1 && msgBody == 1) || (globalDay == 2 && msgBody == 3)){            
             isQuestionOne = false;
-            twiml.message('Correct! Great job!');
+            twiml.message('Correct! Great job! Stay tuned tomorrow for more!');
         }
         else if(parseInt(msgBody) > 3 || parseInt(msgBody) < 1 || isNaN(msgBody)){
             twiml.message('Please check your response! Choose 1, 2, or 3!');            
