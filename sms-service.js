@@ -95,13 +95,6 @@ function formSubmission(req, res) {
             "choices": ['1.' + values[2], '2.' + values[3], '3.' + values[4]],
             "answer": 1
         }
-        /*
-        numbers.push(values[5]);
-        numbers.push(values[6]);
-        numbers.push(values[7]);
-        */
-        //        console.log(values);
-        //        console.log(values[values.length - 1]);
     });
     form.parse(req);
 }
@@ -146,7 +139,8 @@ app.post('/sms', function (req, res) {
 
     var msgBody = req.body.Body;
 
-    /* //experimental: registration scheme
+//experimental: registration logical scheme
+    /* 
     if(msgBody.trim().toLowerCase() == 'join'){
         console.log(req.body);
     }
@@ -157,6 +151,7 @@ app.post('/sms', function (req, res) {
             acceptedQuiz = true;
             isQuestionOne = true;
             var messageString = 'Here is your question! \n' + questions[globalDay]['question'] + '\n\nChoices:\n';
+/* yikes */
             for (var i = 0; i < 3; i++) {
                 messageString += '\n' + questions[globalDay]['choices'][i];
             }
