@@ -92,9 +92,10 @@ function formSubmission(req, res) {
             "questionName": "Test question Name",
             "info": values[0],
             "question": values[1],
-            "choices": ['1.' + values[2], '2.' + values[3], '3.' + values[4]],
+            "choices": ['1.' + values[1], '2.' + values[2], '3.' + values[3]],
             "answer": 1
         }
+        console.log(questions);
     });
     form.parse(req);
 }
@@ -150,8 +151,10 @@ app.post('/sms', function (req, res) {
         if (msgBody.trim().toLowerCase() == 'yes') {
             acceptedQuiz = true;
             isQuestionOne = true;
-            var messageString = 'Here is your question! \n' + questions[globalDay]['question'] + '\n\nChoices:\n';
-/* yikes */
+
+
+            var messageString = 'Here is your question! \nIs A A?\n\nChoices:\n';
+/* yikes  - needs to reference a backend to query for all numbers in data base*/
             for (var i = 0; i < 3; i++) {
                 messageString += '\n' + questions[globalDay]['choices'][i];
             }
