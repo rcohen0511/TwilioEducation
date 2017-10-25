@@ -3,15 +3,27 @@ var formidable = require('formidable');
 var http = require('http');
 var port = process.env.PORT || 3000;
 var util = require('util');
+var express = require('express');
+var MessagingResponse = require('twilio').twiml.MessagingResponse; 
+
+var app = express();
 
 var client = require('twilio')(
-    //    process.env.TWILIO_ACCOUNT_SID,
-    //    process.env.TWILIO_AUTH_TOKEN
     'ACc694cec59a35c6b5830571760dc626a6',
     'af0ddb5adb3d8d38d04babd5b03b24db'
 );
 
+app.post('/sms', function(req,res){
+    var twiml = new MessagingResponse();
+    
+    twiml.message('Hey man');
+    
+    res.writeHead(200, {'Content-Type':'text/xml'});
+    res.end(twiml.toString());
+});
 
+
+/*
 function sendMessage() {
     client.messages.create({
         from: "+19149966800",
@@ -55,14 +67,18 @@ function displayForm(res) {
 		res.end();
 	});
 };
+*/
 
-var server = http.createServer(function (req, res) {
-    console.log(process.env);
-    if (req.method.toLowerCase() == 'get') {
-        displayForm(res);
-    } else if (req.method.toLowerCase() == 'post') {
-        submitForm(req, res);
-    }
-});
-
-server.listen(port);
+http.createServer(app).listen(port, function(){
+    console.log('Express listening on 3000');
+})
+//
+//var server = http.createServer(function (req, res) {
+//    console.log(process.env);
+//    if (req.method.toLowerCase() == 'get') {
+//        displayForm(res);
+//    } else if (req.method.toLowerCase() == 'post') {
+//        submitForm(req, res);
+//    }
+//});
+//server.listen(port);
