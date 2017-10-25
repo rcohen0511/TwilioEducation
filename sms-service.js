@@ -182,7 +182,55 @@ app.post('/sms', function (req, res) {
     res.end(twiml.toString());
 });
 
-http.createServer(app).listen(3000, function () {
+app.post('/reply', function (req, res) {
+    var twilio = require('twilio');
+    var twiml = new MessagingResponse();
+
+    var msgBody = req.body.Body;
+
+//experimental: registration logical scheme
+    /* 
+    if(msgBody.trim().toLowerCase() == 'join'){
+        console.log(req.body);
+    }
+    */
+    
+    if (!acceptedQuiz) { //if hasnt accepted the quiz attempt
+        if (msgBody.trim().toLowerCase() == 'yes') {
+            acceptedQuiz = true;
+            isQuestionOne = true;
+
+
+            var messageString = 'Here is your question! \nIs A A?\n\nChoices:\n';
+/* yikes  - needs to reference a backend to query for all numbers in data base*/
+            for (var i = 0; i < 3; i++) {
+                messageString += '\n' + questions[globalDay]['choices'][i];
+            }
+            twiml.message(messageString);
+        } else if (msgBody.trim().toLowerCase() == 'no') {
+            twiml.message('Fair enough!');
+        } else {
+            twiml.message('Please check your spelling or re-type \'Yes\' to take the quiz!');
+        }
+    } else if (acceptedQuiz && isQuestionOne) {
+        if ((globalDay == 0 && msgBody == 1) || (globalDay == 1 && msgBody == 1) || (globalDay == 2 && msgBody == 3)) {
+            isQuestionOne = false;
+            twiml.message('Correct! Great job! Stay tuned tomorrow for more!');
+        } else if (parseInt(msgBody) > 3 || parseInt(msgBody) < 1 || isNaN(msgBody)) {
+            twiml.message('Please check your response! Choose 1, 2, or 3!');
+        } else {
+            isQuestionOne = false;
+            twiml.message('I\'m sorry, but that\'s incorrect. Try again tomorrow!');
+        }
+    }
+    
+    res.writeHead(200, {
+        'Content-Type': 'text/xml'
+    });
+    res.end(twiml.toString());
+});
+
+http.createServer(app).listen(process.env.PORT || 3000, function () {
     console.log("Express server listening on port 3000");
 });
 
