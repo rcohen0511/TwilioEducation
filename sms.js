@@ -1,8 +1,8 @@
-var fs = require('fs');
-var formidable = require('formidable');
+//var fs = require('fs');
+//var formidable = require('formidable');
 var http = require('http');
 var port = process.env.PORT || 3000;
-var util = require('util');
+//var util = require('util');
 var express = require('express');
 var MessagingResponse = require('twilio').twiml.MessagingResponse; 
 
