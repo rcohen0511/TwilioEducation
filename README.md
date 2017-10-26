@@ -7,7 +7,7 @@ To run on localhost, type:
 	    
 	                        node sms.js
 
-Be sure to swap the environment variables on lines 48 and 49 if you do not have environment variables with these names:
+Be sure to swap the environment variables on line 125 if you do not have environment variables with these names:
 
 	process.env.TWILIO_PHONE_NUMBER
 	process.env.CELL_PHONE_NUMBER
