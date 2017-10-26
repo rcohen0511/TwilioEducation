@@ -54,8 +54,8 @@ var users = [
 	]
 
 var client = require('twilio')(
-    'ACc694cec59a35c6b5830571760dc626a6',
-    'af0ddb5adb3d8d38d04babd5b03b24db'
+        process.env.TWILIO_ACCOUNT_SID,
+        process.env.TWILIO_AUTH_TOKEN
 );
 
 function displayForm(res) {

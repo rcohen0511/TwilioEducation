@@ -1,6 +1,3 @@
-Some thing. 
-
-
 # TwilioSend
 
 To run on localhost, type:
@@ -12,7 +9,7 @@ Be sure to swap the environment variables on line 125 if you do not have environ
 	process.env.TWILIO_PHONE_NUMBER
 	process.env.CELL_PHONE_NUMBER
 
-The same goes for these at the top of sms.js: 
+The same goes for these at line 56-59
 
 	process.env.TWILIO_ACCOUNT_SID
 	process.env.TWILIO_AUTH_TOKEN
