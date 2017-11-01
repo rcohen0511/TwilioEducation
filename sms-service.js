@@ -128,8 +128,8 @@ app.post('/', function (req, res) {
     setTimeout(function () {
         for (var i = 0; i < users.length; i++) {
             client.messages.create({
-                from: process.env.TWILIO_PHONE_NUMBER,
-                //                to: users[i]['number'],
+                // from: process.env.TWILIO_PHONE_NUMBER,
+                from: '+19149966800',
                 to: values[i + 4],
                 body: 'Hello! Here\'s today\'s tip: \n' + questions[globalDay]['info'] + ' \n Would you like to test your knowledge? Respond with "Yes" to answer a quiz question!'
             }, function (err, message) {
