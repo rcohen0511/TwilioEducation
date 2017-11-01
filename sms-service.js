@@ -10,6 +10,49 @@ var twilio = require('twilio');
 var MessagingResponse = require('twilio').twiml.MessagingResponse;
 var bodyParser = require('body-parser');
 
+var questions = [
+    {
+        "questionId": 0,
+        "questionName": "Test question Name",
+        "info": "Do you wash your hands before you eat? You should! Otherwise you lend yourself vulnerable to nasty bacteria found on the street.",
+        "question": "How many minutes should you wash your hands?",
+        "choices": ['1. 2 minutes', '2. 1 minute', '3. 4 minutes'],
+        "answer": 1
+    },
+    {
+        "questionId": 1,
+        "questionName": "Test question Name1",
+        "info": "Basic information1",
+        "question": "What is blah blah, basic question1?",
+        "choices": [1, 2, 3],
+        "answer": 2
+    },
+    {
+        "questionId": 2,
+        "questionName": "Test question Name2",
+        "info": "Basic information2",
+        "question": "What is blah blah, basic question2?",
+        "choices": [1, 2, 3],
+        "answer": 3
+    },
+]
+var users = [
+    {
+        'name': 'Jon Koller',
+        'number': '+19143301533'
+    },
+
+    {
+        "name": "Bruce Wayne",
+        "number": "+19174445555"
+    }
+	,
+    {
+        "name": "Arnold Schwartzenager",
+        "number": "+12123334444"
+    }
+	]
+
 var client = require('twilio')(
         // process.env.TWILIO_ACCOUNT_SID,
         // process.env.TWILIO_AUTH_TOKEN
@@ -77,26 +120,25 @@ app.get('/sms', function (req, res) {
     displayForm(res);
 });
 
-// app.post('/', function (req, res) {
-//     formSubmission(req, res);
-//     formSubmitted = true;
+app.post('/', function (req, res) {
+    formSubmission(req, res);
+    formSubmitted = true;
 
-//     //setInterval
-//     setTimeout(function () {
-//         for (var i = 0; i < users.length; i++) {
-//             client.messages.create({
-//                 // from: process.env.TWILIO_PHONE_NUMBER,
-//                 from: '+19149966800',
-//                 to: values[i + 4],
-//                 body: 'Hello! Here\'s today\'s tip: \n' + questions[globalDay]['info'] + ' \n Would you like to test your knowledge? Respond with "Yes" to answer a quiz question!'
-//             }, function (err, message) {
-//                 if (err) console.error(err.message);
-//             });
-//         }
-//     }, 1000);
-//     //dayInMilliseconds		
-// })
-
+    //setInterval
+    setTimeout(function () {
+        for (var i = 0; i < users.length; i++) {
+            client.messages.create({
+                // from: process.env.TWILIO_PHONE_NUMBER,
+                from: '+19149966800',
+                to: values[i + 4],
+                body: 'Hello! Here\'s today\'s tip: \n' + questions[globalDay]['info'] + ' \n Would you like to test your knowledge? Respond with "Yes" to answer a quiz question!'
+            }, function (err, message) {
+                if (err) console.error(err.message);
+            });
+        }
+    }, 1000);
+    //dayInMilliseconds		
+})
 
 app.post('/sms', function (req, res) {
     var twilio = require('twilio');
