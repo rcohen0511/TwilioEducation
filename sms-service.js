@@ -54,8 +54,10 @@ var users = [
 	]
 
 var client = require('twilio')(
-    'ACc694cec59a35c6b5830571760dc626a6',
-    'af0ddb5adb3d8d38d04babd5b03b24db'
+        // process.env.TWILIO_ACCOUNT_SID,
+        // process.env.TWILIO_AUTH_TOKEN
+        'ACc694cec59a35c6b5830571760dc626a6',
+        'af0ddb5adb3d8d38d04babd5b03b24db'
 );
 
 function displayForm(res) {
@@ -114,6 +116,10 @@ app.get('/', function (req, res) {
     displayForm(res);
 });
 
+app.get('/sms', function (req, res) {
+    displayForm(res);
+});
+
 app.post('/', function (req, res) {
     formSubmission(req, res);
     formSubmitted = true;
@@ -122,8 +128,8 @@ app.post('/', function (req, res) {
     setTimeout(function () {
         for (var i = 0; i < users.length; i++) {
             client.messages.create({
-                from: "+19149966800",
-                //                to: users[i]['number'],
+                // from: process.env.TWILIO_PHONE_NUMBER,
+                from: '+19149966800',
                 to: values[i + 4],
                 body: 'Hello! Here\'s today\'s tip: \n' + questions[globalDay]['info'] + ' \n Would you like to test your knowledge? Respond with "Yes" to answer a quiz question!'
             }, function (err, message) {
@@ -140,13 +146,6 @@ app.post('/sms', function (req, res) {
 
     var msgBody = req.body.Body;
 
-//experimental: registration logical scheme
-    /* 
-    if(msgBody.trim().toLowerCase() == 'join'){
-        console.log(req.body);
-    }
-    */
-    
     if (!acceptedQuiz) { //if hasnt accepted the quiz attempt
         if (msgBody.trim().toLowerCase() == 'yes') {
             acceptedQuiz = true;
@@ -182,7 +181,7 @@ app.post('/sms', function (req, res) {
     res.end(twiml.toString());
 });
 
-http.createServer(app).listen(3000, function () {
+http.createServer(app).listen(process.env.PORT || 3000, function () {
     console.log("Express server listening on port 3000");
 });
 
