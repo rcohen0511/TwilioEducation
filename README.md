@@ -2,7 +2,7 @@
 
 To run on localhost, type:
 	    
-	                        node sms.js
+	node sms.js
 
 Be sure to swap the environment variables on line 125 if you do not have environment variables with these names:
 
